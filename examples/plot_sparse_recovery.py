@@ -27,16 +27,18 @@ cmap = plt.get_cmap('tab10')
 # %%
 # First we simulate noisy linear regression data with sparse true coefficients
 # ``w_true``
-n_features = 1000
+n_samples = 20
+n_features = 100
 density = 0.1
 np.random.seed(0)
-supp = np.random.choice(n_features, size=int(density * n_features),
-                        replace=False)
+# supp = np.random.choice(n_features, size=int(density * n_features),
+# replace=False)
+supp = np.arange(0, int(density * n_features))
 w_true = np.zeros(n_features)
-w_true[supp] = 1
+w_true[supp] = 10
 X_, y_, w_true = make_correlated_data(
-    n_samples=1000, n_features=n_features, snr=5, random_state=2,
-    rho=0.5, w_true=w_true)
+    n_samples=2 * n_samples, n_features=n_features, snr=10, random_state=2,
+    rho=0.95, w_true=w_true)
 
 # %%
 # In order to circumvent issues with MCP, the data is standardized.
@@ -110,7 +112,8 @@ for idx, penalty_name in enumerate(penalties.keys()):
 
     for j, w in enumerate(coefs_path.T):
         f1_temp[j] = f1_score(w != 0, w_true != 0)
-        prediction_error_temp[j] = mean_squared_error(X_test @ w, y_test) / mse_ref
+        prediction_error_temp[j] = mean_squared_error(
+            X_test @ w, y_test) / mse_ref
 
     f1[penalty_name] = f1_temp
     prediction_error[penalty_name] = prediction_error_temp
