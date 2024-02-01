@@ -38,7 +38,7 @@ w_true = np.zeros(n_features)
 w_true[supp] = 10
 X_, y_, w_true = make_correlated_data(
     n_samples=2 * n_samples, n_features=n_features, snr=10, random_state=2,
-    rho=0.95, w_true=w_true)
+    rho=0.98, w_true=w_true)
 
 # %%
 # In order to circumvent issues with MCP, the data is standardized.
